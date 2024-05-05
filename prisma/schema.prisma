@@ -1,0 +1,41 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+//model da tabela users
+model User {
+  id String @id @default(uuid())
+  name String
+  email String
+  password String
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+  @@map("users") //@@map = nome da tabela no banco
+
+  //criando relação com a tabela UserGroup
+  user_group UserGroup @relation(fields: [group_id], references: [id])
+  group_id String
+}
+
+model UserGroup {
+  id String @id @default(uuid())
+  name_group String
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+  user User[]
+}
+
+//yarn prisma migrate dev ou npx prisma migrate --[nome da migration] --init
