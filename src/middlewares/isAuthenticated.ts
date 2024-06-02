@@ -13,7 +13,7 @@ export function isAuthenticated( req: Request, res: Response, next: NextFunction
         res.status(400).end();
     };
 
-    //transformando const em array separando por espaço mas igorando o primeiro item.
+    //desconstruindo token em um array, tirando o prefixo Bearer e pegando apenas o token.
     const [, token] = authToken.split(" ");
 
     //verificando token com método verify do JWT
